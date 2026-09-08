@@ -1,0 +1,27 @@
+package main
+
+import (
+    "fmt"
+    "sync"
+    "time"
+)
+
+// concurrency.go
+// Demonstrates goroutines and sync.WaitGroup for concurrency.
+
+func worker(id int, wg *sync.WaitGroup) {
+    defer wg.Done()
+    fmt.Printf("Worker %d starting\n", id)
+    time.Sleep(100 * time.Millisecond)
+    fmt.Printf("Worker %d done\n", id)
+}
+
+func main() {
+    var wg sync.WaitGroup
+    for i := 1; i <= 3; i++ {
+        wg.Add(1)
+        go worker(i, &wg)
+    }
+    wg.Wait()
+    fmt.Println("All workers finished")
+}
